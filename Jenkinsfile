@@ -1,19 +1,20 @@
 pipeline {
-  agent any
-
+  agent none
   stages {
-    stage('Build') {
+    stage('Back-end') {
+      agent {
+        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+      }
       steps {
-        sh """
-          docker build -t hello_there .
-        """
+        sh 'mvn --version'
       }
     }
-    stage('Run') {
+    stage('Front-end') {
+      agent {
+        docker { image 'node:16-alpine' }
+      }
       steps {
-        sh """
-          docker run rm hello_there .
-        """
+        sh 'node --version'
       }
     }
   }
